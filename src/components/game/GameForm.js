@@ -46,36 +46,6 @@ export const GameForm = () => {
         setCurrentGame(newGameState)
     }
 
-    const changeGameNameState = (event) => {
-        const newGameState = { ...currentGame }
-        newGameState.name = event.target.value
-        setCurrentGame(newGameState)
-    }
-
-    const changeGameMakerState = (event) => {
-        const newGameState = { ...currentGame }
-        newGameState.maker = event.target.value
-        setCurrentGame(newGameState)
-    }
-
-    const changeGamePlayersState = (event) => {
-        const newGameState = { ...currentGame }
-        newGameState.numberOfPlayers = event.target.value
-        setCurrentGame(newGameState)
-    }
-
-    const changeGameDescriptionState = (event) => {
-        const newGameState = { ...currentGame }
-        newGameState.description = event.target.value
-        setCurrentGame(newGameState)
-    }
-
-    const changeGameTypeState = (event) => {
-        const newGameState = { ...currentGame }
-        newGameState.gameTypeId = event.target.value
-        setCurrentGame(newGameState)
-    }
-    /* REFACTOR CHALLENGE END */
 
     return (
         <form className="gameForm">
@@ -103,15 +73,6 @@ export const GameForm = () => {
                     </select>
                 </div>
             </fieldset>
-            {/* <fieldset>
-                <div className="form-group">
-                    <label htmlFor="gametype">Game Type: </label>
-                    <input type="text" name="gameTypeId" required autoFocus className="form-control"
-                        value={currentGame.gameTypeId}
-                        onChange={changeGameTypeState}
-                    />
-                </div>
-            </fieldset> */}
             <fieldset>
                 <div className="form-group">
                     <label htmlFor="description">Description: </label>
@@ -154,7 +115,7 @@ export const GameForm = () => {
                         name: currentGame.name,
                         description: currentGame.description,
                         maker: currentGame.maker,
-                        number_of_layers: parseInt(currentGame.numberOfPlayers),
+                        number_of_players: parseInt(currentGame.numberOfPlayers),
                         gameTypeId: parseInt(currentGame.gameTypeId),
                         gamerId: parseInt(currentGame.gamerId)
                     }

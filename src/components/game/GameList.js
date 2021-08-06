@@ -25,7 +25,7 @@ export const GameList = (props) => {
                         <div className="game__name">{game.name} by {game.maker}</div>
                         <div className="game__players">{game.number_of_players} players needed</div>
                         <div className="game__description">Game Description: {game.description}</div>
-                        <div className="game__type">Game Type: {game.type}</div>
+                        <div className="game__type">Game Type: {game.game_type.label}</div>
                     </section>
                 })
             }
