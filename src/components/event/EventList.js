@@ -1,9 +1,10 @@
 import React, { useContext, useEffect } from "react"
 import { EventContext } from "./EventProvider.js"
-import { useHistory } from "react-router"
+import { useHistory } from "react-router-dom"
+import "./Event.css"
 
 export const EventList = (props) => {
-    const { events, getEvents } = useContext(EventContext)
+    const { events, getEvents, JoinEvent } = useContext(EventContext)
     const history = useHistory()
 
     useEffect(() => {
@@ -23,6 +24,7 @@ export const EventList = (props) => {
             </div>
             {
                 events.map(event => {
+                    // const attending = profile.events.some(evt => evt.id === event.id)
                     return <section key={event.id} className="registration">
                         <div className="event_title">{event.title}</div>
                         <div className="registration__game">{event.game.name}</div>
@@ -40,6 +42,9 @@ export const EventList = (props) => {
                             }
                             @ {event.time}
                         </div>
+                        <button className="btn btn-2" onClick={() => JoinEvent(event.id)}>
+                            Join
+                        </button>
                     </section>
                 })
             }
