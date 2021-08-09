@@ -1,11 +1,11 @@
 import React, { useContext, useState, useEffect } from "react"
 import { GameContext } from "./GameProvider.js"
-import { useHistory } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 
 
 export const GameForm = () => {
     const history = useHistory()
-    const {createGame, getGameTypes, gameTypes} = useContext(GameContext)
+    const { createGame, editGame, getGameTypes, gameTypes, getGameById } = useContext(GameContext)
 
     /*
         Since the input fields are bound to the values of
@@ -21,6 +21,8 @@ export const GameForm = () => {
         gameTypeId: 0
     })
 
+    const gameId = useParams()
+
     /*
         Get game types on initialization so that the <select>
         element presents game type choices to the user.
@@ -29,16 +31,21 @@ export const GameForm = () => {
         getGameTypes()
     }, [])
 
-    /*
-        REFACTOR CHALLENGE START
+    useEffect(() => {
+        getGameById(gameId)
+            .then((game) => {
+                setCurrentGame({
+                    id: parseInt(gameId),
+                    name: game.name,
+                    description: game.description,
+                    numberOfPlayers: game.number_of_players,
+                    gamer: game.gamer,
+                    maker: game.maker,
+                    gameTypeId: game.game_type.id
+                })
+            })
+    }, [gameId])
 
-        Can you refactor this code so that all property
-        state changes can be handled with a single function
-        instead of five functions that all, largely, do
-        the same thing?
-
-        One hint: [event.target.name]
-    */
 
     const handleControlledInputChange = (event) => {
         const newGameState = { ...currentGame }
@@ -104,27 +111,46 @@ export const GameForm = () => {
                 </div>
             </fieldset>
 
-            {/* You create the rest of the input fields for each game property */}
+            {
+                (gameId)
+                    ? <button type="submit"
+                        onClick={evt => {
+                            // Prevent form from being submitted
+                            evt.preventDefault()
+                            editGame({
+                                id: parseInt(gameId),
+                                name: currentGame.name,
+                                description: currentGame.description,
+                                maker: currentGame.maker,
+                                number_of_players: parseInt(currentGame.numberOfPlayers),
+                                gameTypeId: parseInt(currentGame.gameTypeId),
+                                gamerId: parseInt(currentGame.gamerId)
+                            })
+                                .then(() => history.push("/games"))
+                        }}
+                        className="btn btn-primary">Edit</button>
 
-            <button type="submit"
-                onClick={evt => {
-                    // Prevent form from being submitted
-                    evt.preventDefault()
+                    : <button type="submit"
+                        onClick={evt => {
+                            // Prevent form from being submitted
+                            evt.preventDefault()
 
-                    const game = {
-                        name: currentGame.name,
-                        description: currentGame.description,
-                        maker: currentGame.maker,
-                        number_of_players: parseInt(currentGame.numberOfPlayers),
-                        gameTypeId: parseInt(currentGame.gameTypeId),
-                        gamerId: parseInt(currentGame.gamerId)
-                    }
+                            const game = {
+                                name: currentGame.name,
+                                description: currentGame.description,
+                                maker: currentGame.maker,
+                                number_of_players: parseInt(currentGame.numberOfPlayers),
+                                gameTypeId: parseInt(currentGame.gameTypeId),
+                                gamerId: parseInt(currentGame.gamerId)
+                            }
 
-                    // Send POST request to your API
-                    createGame(game)
-                        .then(() => history.push("/games"))
-                }}
-                className="btn btn-primary">Create</button>
+                            // Send POST request to your API
+                            createGame(game)
+                                .then(() => history.push("/games"))
+                        }}
+                        className="btn btn-primary">Create</button>
+            }
+
         </form>
     )
 }
