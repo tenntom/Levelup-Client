@@ -21,7 +21,7 @@ export const GameForm = () => {
         gameTypeId: 0
     })
 
-    const gameId = useParams()
+    const {gameId} = useParams()
 
     /*
         Get game types on initialization so that the <select>

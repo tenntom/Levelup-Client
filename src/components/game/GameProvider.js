@@ -46,8 +46,7 @@ export const GameProvider = (props) => {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(game)
-        })
-        .then(getGames)
+        }).then(getGames)
     }
 
     const getGameTypes = () => {
